@@ -5,7 +5,7 @@
     "keywords": [
         "laravel",
         "passwords",
-        "security",
+        "security"
     ],
     "homepage": "https://github.com/sicaboy/laravel-security",
     "license": "MIT",

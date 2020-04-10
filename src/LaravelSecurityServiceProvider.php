@@ -30,7 +30,6 @@ class LaravelSecurityServiceProvider extends ServiceProvider
      * @var string
      */
     protected $message = [
-        'not_common_password' => 'This password is too common used. Please try another.',
         'not_used_password' => 'This password has been used before. Please try another.',
     ];
 
@@ -42,14 +41,6 @@ class LaravelSecurityServiceProvider extends ServiceProvider
 
         $this->registerPublishing();
 
-        Validator::extend('not_common_password', function ($attribute, $value, $parameters, $validator) {
-            $path = realpath(__DIR__ . '/../resources/config/not_common_password_list.txt');
-            $cache_key = md5_file($path);
-            $data = Cache::rememberForever('not_common_password_list_' . $cache_key, function () use ($path) {
-                return collect(explode("\n", file_get_contents($path)));
-            });
-            return !$data->contains($value);
-        }, $this->message['not_common_password']);
 
         Validator::extend('not_used_password', function ($attribute, $value, $parameters, $validator) {
 

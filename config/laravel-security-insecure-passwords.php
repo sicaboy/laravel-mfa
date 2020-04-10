@@ -1,3 +1,6 @@
+<?php
+
+return <<<EOF
 123456
 password
 12345678
@@ -9998,3 +10001,4 @@ c2h5oh
 bubbles1
 brook
 brady
+EOF;
