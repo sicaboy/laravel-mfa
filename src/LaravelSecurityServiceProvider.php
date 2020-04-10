@@ -39,6 +39,7 @@ class LaravelSecurityServiceProvider extends ServiceProvider
                 __DIR__.'/../config' => config_path(),
                 __DIR__.'/../database/migrations' => database_path('migrations'),
                 __DIR__.'/../resources/lang' => resource_path('lang'),
+                __DIR__.'/../resources/views' => resource_path('views/laravel-security')
             ], 'laravel-security');
 
             $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'security');
