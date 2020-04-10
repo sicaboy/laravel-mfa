@@ -38,7 +38,7 @@ Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class
 
 - [NotCommonPassword](src/Rules/NotCommonPassword.php)
 
-- [NotUsedPassword](src/Rules/NotUsedPassword.php)
+- [NotAUsedPassword](src/Rules/NotAUsedPassword.php)
 
 
 ## Usage
@@ -60,18 +60,18 @@ public function rules()
             'regex:/[0-9]/',      // must contain at least one digit
             //...
             new \Sicaboy\LaravelSecurity\Rules\NotCommonPassword(),
-            new \Sicaboy\LaravelSecurity\Rules\NotUsedPassword(),
+            new \Sicaboy\LaravelSecurity\Rules\NotAUsedPassword(),
             // or only check used password for a specific user:
-            // new \Sicaboy\LaravelSecurity\Rules\NotUsedPassword($userId),
+            // new \Sicaboy\LaravelSecurity\Rules\NotAUsedPassword($userId),
             // Also you need to call handler function mentioned in the next section
         ],
     ];
 }
 ```
 
-## Not Used Password 
+## Additional method you need to call when you use NotAUsedPassword 
 
-You need to call `NotUsedPasswordHandler::lodgePassword` when the user is created and changes the password. If you use `NotUsedPassword` validator.
+You need to call `NotAUsedPasswordHandler::lodgePassword` when the user is created and changes the password. If you use `NotAUsedPassword` validator.
 
 ```php
     protected function create(array $data)
@@ -82,7 +82,7 @@ You need to call `NotUsedPasswordHandler::lodgePassword` when the user is create
             'password' => Hash::make($data['password']),
         ]);
         
-        \Sicaboy\LaravelSecurity\Handlers\NotUsedPasswordHandler::lodgePassword($user->id, $data['password']);
+        \Sicaboy\LaravelSecurity\Handlers\NotAUsedPasswordHandler::lodgePassword($user->id, $data['password']);
 
         return $user;
     }

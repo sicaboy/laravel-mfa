@@ -5,7 +5,7 @@ namespace Sicaboy\LaravelSecurity\Handlers;
 
 use Hash;
 
-class NotUsedPasswordHandler
+class NotAUsedPasswordHandler
 {
     public static function lodgePassword($userId, $password)
     {

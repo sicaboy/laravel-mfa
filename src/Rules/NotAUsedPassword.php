@@ -6,7 +6,7 @@ namespace Sicaboy\LaravelSecurity\Rules;
 use Illuminate\Contracts\Validation\Rule;
 use Hash;
 
-class NotUsedPassword implements Rule
+class NotAUsedPassword implements Rule
 {
 
     /** @var string */
@@ -53,7 +53,7 @@ class NotUsedPassword implements Rule
 
     public function message(): string
     {
-        return __('laravel-security.not_used_password', [
+        return __('laravel-security.not_a_used_password', [
             // 'attribute' => $this->attribute,
             // 'model' => $classBasename,
         ]);
