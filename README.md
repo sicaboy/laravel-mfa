@@ -53,17 +53,10 @@ public function rules()
             'regex:/[A-Z]/',      // must contain at least one uppercase letter
             'regex:/[0-9]/',      // must contain at least one digit
             //...
-            NotCommonPassword(),
+            new NotCommonPassword(),
         ],
     ];
 }
-```
-Error Message:
-
-You can customize the error message by opening `resources/lang/en/validation.php` and adding to the array like so:
-
-```php
-  'not_common_password' => 'The message for the validator',
 ```
 
 ## Change log
