@@ -36,8 +36,8 @@ Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class
 
 ## Available Rules
 
-- [NotCommonPassword](src/RulesNotCommonPassword.php)
-- 
+- [NotCommonPassword](src/Rules/NotCommonPassword.php)
+
 
 ## Usage
 
