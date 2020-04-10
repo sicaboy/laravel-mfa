@@ -1,0 +1,51 @@
+{
+    "name": "sicaboy/laravel-security",
+    "type": "library",
+    "description": "",
+    "keywords": [
+        "laravel",
+        "passwords",
+        "security",
+    ],
+    "homepage": "https://github.com/sicaboy/laravel-security",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Shen",
+            "email": "slj@slj.me",
+            "homepage": "http://slj.me",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "~5.6|~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "~4.0||~5.0",
+        "scrutinizer/ocular": "~1.1",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sicaboy\\LaravelSecurity\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sicaboy\\LaravelSecurity\\Test": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Sicaboy\\LaravelSecurity\\LaravelSecurityServiceProvider"
+            ]
+        }
+    }
+}
