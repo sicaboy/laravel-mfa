@@ -22,10 +22,10 @@ This package can be used to enhance the user security of Laravel projects.
 To get the latest version of Laravel Security, simply add the following line to the require block of your `composer.json` file.
 
 ```
-"sicaboy/laravel-security": "1.0.*"
-```
+composer require sicaboy/laravel-security
 
-You'll then need to run `composer install` or `composer update` to download it and have the autoloader updated.
+php artisan vendor:publish --provider="Sicaboy\LaravelSecurity\LaravelSecurityServiceProvider"
+```
 
 - If you're on Laravel 5.5 or above, that's all you need to do! Check out the usage examples below.
 - If you're on Laravel < 5.5, you'll need to register the service provider. Open up `config/app.php` and add the following to the `providers` array:
@@ -38,15 +38,15 @@ Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class
 
 - [NotCommonPassword](src/Rules/NotCommonPassword.php)
 
+- [NotUsedPassword](src/Rules/NotUsedPassword.php)
+
 
 ## Usage
 
 ```php
 
 // In a `FormRequest`
-// Add new NotCommonPassword() to the rule list
-
-use Sicaboy\LaravelSecurity\Rules\NotCommonPassword;
+// Add rule instance to the rules list
 
 public function rules()
 {
@@ -59,10 +59,35 @@ public function rules()
             'regex:/[A-Z]/',      // must contain at least one uppercase letter
             'regex:/[0-9]/',      // must contain at least one digit
             //...
-            new NotCommonPassword(),
+            new \Sicaboy\LaravelSecurity\Rules\NotCommonPassword(),
+            new \Sicaboy\LaravelSecurity\Rules\NotUsedPassword(),
+            // or only check used password for a specific user:
+            // new \Sicaboy\LaravelSecurity\Rules\NotUsedPassword($userId),
+            // Also you need to call handler function mentioned in the next section
         ],
     ];
 }
+```
+
+## Not Used Password 
+
+You need to call `NotUsedPasswordHandler::lodgePassword` when the user is created and changes the password. If you use `NotUsedPassword` validator.
+
+```php
+    protected function create(array $data)
+    {
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+        
+        \Sicaboy\LaravelSecurity\Handlers\NotUsedPasswordHandler::lodgePassword($user->id, $data['password']);
+
+        return $user;
+    }
+
+    // Also in change password method... DIY
 ```
 
 ## Change log
