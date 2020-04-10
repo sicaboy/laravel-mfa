@@ -34,11 +34,17 @@ You'll then need to run `composer install` or `composer update` to download it a
 Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class
 ```
 
+## Available Rules
+
+- [NotCommonPassword](src/RulesNotCommonPassword.php)
+- 
+
 ## Usage
 
 ```php
 
-// in a `FormRequest`
+// In a `FormRequest`
+// Add new NotCommonPassword() to the rule list
 
 use Sicaboy\LaravelSecurity\Rules\NotCommonPassword;
 
