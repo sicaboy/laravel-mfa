@@ -19,7 +19,7 @@ class NotCommonPassword implements Rule
     public function passes($attribute, $value): bool
     {
         //$this->attribute = $attribute;
-        $wordsStr = config( 'laravel-security-insecure-passwords');
+        $wordsStr = config('laravel-security-insecure-passwords');
         $cache_key = md5($wordsStr);
         $data = Cache::rememberForever('not_common_password_list_' . $cache_key, function () use ($wordsStr) {
             return collect(explode("\n", $wordsStr));
@@ -29,7 +29,7 @@ class NotCommonPassword implements Rule
 
     public function message(): string
     {
-        return __('This password is too common used. Please try another.', [
+        return __('laravel-security.not_common_password', [
             'attribute' => $this->attribute,
         ]);
 
