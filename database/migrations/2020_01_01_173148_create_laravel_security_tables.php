@@ -28,9 +28,10 @@ class CreateLaravelSecurityTables extends Migration
             $table->timestamps();
         });
         Schema::create(config('laravel-security.database.user_security_table'), function (Blueprint $table) {
+            $table->increments('id');
             $table->bigInteger('user_id');
-            $table->date('last_loggein_at');
-            $table->date('last_password_updated_at');
+            $table->date('last_loggein_at')->nullable();
+            $table->date('last_password_updated_at')->nullable();
             $table->integer('status')->default(10);
             $table->timestamps();
         });

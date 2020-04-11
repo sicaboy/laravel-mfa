@@ -13,11 +13,18 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \Sicaboy\LaravelSecurity\Events\UserRegistered::class => [
+        \Illuminate\Auth\Events\Registered::class => [
             \Sicaboy\LaravelSecurity\Listeners\InsertUsedPassword::class,
+            \Sicaboy\LaravelSecurity\Listeners\LodgeLastLogin::class,
+            \Sicaboy\LaravelSecurity\Listeners\LodgeLastPasswordUpdated::class,
         ],
-        \Sicaboy\LaravelSecurity\Events\UserLoggedIn::class => [
-            'App\Listeners\EventListener',
+        \Illuminate\Auth\Events\Login::class => [
+            \Sicaboy\LaravelSecurity\Listeners\LodgeLastLogin::class,
+        ],
+        \Illuminate\Auth\Events\PasswordReset::class => [
+            \Sicaboy\LaravelSecurity\Listeners\InsertUsedPassword::class,
+            \Sicaboy\LaravelSecurity\Listeners\LodgeLastLogin::class,
+            \Sicaboy\LaravelSecurity\Listeners\LodgeLastPasswordUpdated::class,
         ],
     ];
 

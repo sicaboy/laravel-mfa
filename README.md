@@ -5,7 +5,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/sicaboy/laravel-security.svg?style=flat-square)](https://scrutinizer-ci.com/g/sicaboy/laravel-security)
 [![Total Downloads](https://img.shields.io/packagist/dt/sicaboy/laravel-security.svg?style=flat-square)](https://packagist.org/packages/sicaboy/laravel-security)
 
-### Introduction
+## Introduction
 
 This package can be used to enhance the user security of Laravel projects.
 
@@ -84,9 +84,6 @@ There are events you should add to coresponding methods.
 - If you use `NotAUsedPassword` validator, you need to call the following events:
 
 ```php
-// Call on user regration
-event(new \Sicaboy\LaravelSecurity\Events\UserRegistered($user, $newPlainPassword));
-
 // Call on user password change
 event(new \Sicaboy\LaravelSecurity\Events\UserPasswordChanged($user, $newPlainPassword));
 ```

@@ -2,10 +2,11 @@
 
 namespace Sicaboy\LaravelSecurity\Listeners;
 
+use Carbon\Carbon;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class InsertUsedPassword
+class LodgeLastLogin
 {
     /**
      * Create the event listener.
@@ -25,10 +26,14 @@ class InsertUsedPassword
      */
     public function handle($event)
     {
-        $modelClassName = config('laravel-security.database.password_history_model');
-        return $modelClassName::create([
-            'user_id' => $event->user->id,
-            'password' => $event->user->password
-        ]);
+        $modelClassName = config('laravel-security.database.user_security_model');
+        return $modelClassName::updateOrCreate(
+            [
+                'user_id' => $event->user->id,
+            ],
+            [
+                'last_loggein_at' => Carbon::now()
+            ]
+        );
     }
 }
