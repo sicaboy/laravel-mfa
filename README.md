@@ -17,28 +17,36 @@ This package can be used to enhance the user security of Laravel projects.
 
 ## Installation
 
-[PHP](https://php.net) 5.5+ or [HHVM](http://hhvm.com) 3.3+, and [Composer](https://getcomposer.org) are required.
+Requirements:
+- [PHP](https://php.net) 5.5+ 
+- [Composer](https://getcomposer.org)
 
-To get the latest version of Laravel Security, simply add the following line to the require block of your `composer.json` file.
+To get the latest version of Laravel Security, simply run:
 
 ```
 composer require sicaboy/laravel-security
+```
 
+Then do vendor publish:
+
+```
 php artisan vendor:publish --provider="Sicaboy\LaravelSecurity\LaravelSecurityServiceProvider"
 ```
 
-- If you're on Laravel 5.5 or above, that's all you need to do! Check out the usage examples below.
 - If you're on Laravel < 5.5, you'll need to register the service provider. Open up `config/app.php` and add the following to the `providers` array:
 
 ```php
-Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class
+Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class,
+Siaboy\LaravelSecurity\Providers\EventSecurityServiceProvider::class,
 ```
+
+# Validators
 
 ## Available Rules
 
-- [NotCommonPassword](src/Rules/NotCommonPassword.php)
+- [NotCommonPassword](src/Rules/NotCommonPassword.php) - Avoid user to use a common used password
 
-- [NotAUsedPassword](src/Rules/NotAUsedPassword.php)
+- [NotAUsedPassword](src/Rules/NotAUsedPassword.php) - Avoid user to use a password which has been used before
 
 
 ## Usage
@@ -61,17 +69,29 @@ public function rules()
             //...
             new \Sicaboy\LaravelSecurity\Rules\NotCommonPassword(),
             new \Sicaboy\LaravelSecurity\Rules\NotAUsedPassword(),
-            // or only check used password for a specific user:
+            // or only check used password for a specific user (e.g. on user password change):
             // new \Sicaboy\LaravelSecurity\Rules\NotAUsedPassword($userId),
-            // Also you need to call handler function mentioned in the next section
+            // Also you need to call event, examples in the next section
         ],
     ];
 }
 ```
 
-## Additional method you need to call when you use NotAUsedPassword 
+## Event you need to call 
 
-You need to call `NotAUsedPasswordHandler::lodgePassword` when the user is created and changes the password. If you use `NotAUsedPassword` validator.
+There are events you should add to coresponding methods. 
+
+- If you use `NotAUsedPassword` validator, you need to call the following events:
+
+```php
+// Call on user regration
+event(new \Sicaboy\LaravelSecurity\Events\UserRegistered($user, $newPlainPassword));
+
+// Call on user password change
+event(new \Sicaboy\LaravelSecurity\Events\UserPasswordChanged($user, $newPlainPassword));
+```
+
+Example:
 
 ```php
     protected function create(array $data)
@@ -81,8 +101,8 @@ You need to call `NotAUsedPasswordHandler::lodgePassword` when the user is creat
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-        
-        \Sicaboy\LaravelSecurity\Handlers\NotAUsedPasswordHandler::lodgePassword($user->id, $data['password']);
+                
+        event(new \Sicaboy\LaravelSecurity\Events\UserRegistered($user, $data['password']));
 
         return $user;
     }

@@ -11,8 +11,10 @@
 
 namespace Sicaboy\LaravelSecurity;
 
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Cache;
+use Sicaboy\LaravelSecurity\Providers\EventServiceProvider;
 use Validator;
 
 class LaravelSecurityServiceProvider extends ServiceProvider
@@ -23,7 +25,23 @@ class LaravelSecurityServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->app->register(EventServiceProvider::class);
+
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-security');
+
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'laravel-security');
+
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        
+        $this->commands([
+//                FooCommand::class,
+//                BarCommand::class,
+        ]);
+
+        $this->registerRoutes();
+
         $this->registerPublishing();
+
     }
 
 
@@ -37,13 +55,40 @@ class LaravelSecurityServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config' => config_path(),
-                __DIR__.'/../database/migrations' => database_path('migrations'),
+//                __DIR__.'/../database/migrations' => database_path('migrations'),
                 __DIR__.'/../resources/lang' => resource_path('lang'),
-                __DIR__.'/../resources/views' => resource_path('views/laravel-security')
+                __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-security'),
             ], 'laravel-security');
-
-            $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'security');
         }
+    }
+
+
+    /**
+     * Register the package routes.
+     *
+     * @return void
+     */
+    protected function registerRoutes()
+    {
+        Route::group($this->routeConfiguration(), function () {
+//            $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+        });
+    }
+
+    /**
+     * Get the Nova route group configuration array.
+     *
+     * @return array
+     */
+    protected function routeConfiguration()
+    {
+        return [
+            'namespace' => 'Sicaboy\LaravelSecurity\Http\Controllers',
+            'prefix' => 'security',
+            'as' => 'security.',
+            'middleware' => 'web',
+        ];
     }
 
 }

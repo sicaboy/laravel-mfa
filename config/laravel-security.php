@@ -46,7 +46,7 @@ return [
 
     'database' => [
         'connection' => '',
-        'user_security_table' => 'user_security',
+        'user_security_table' => 'user_extend_security',
         'password_history_table' => 'password_history',
         'password_history_model' => Sicaboy\LaravelSecurity\Model\PasswordHistory::class,
         'user_model' => 'App\User',

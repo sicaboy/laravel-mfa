@@ -44,7 +44,8 @@
         },
         "laravel": {
             "providers": [
-                "Sicaboy\\LaravelSecurity\\LaravelSecurityServiceProvider"
+                "Sicaboy\\LaravelSecurity\\LaravelSecurityServiceProvider",
+                "Sicaboy\\LaravelSecurity\\Providers\\EventServiceProvider"
             ]
         }
     }
