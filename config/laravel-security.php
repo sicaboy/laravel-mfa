@@ -8,7 +8,7 @@ return [
             'enabled' => true,
             'mailable' => Sicaboy\LaravelSecurity\Mail\AuthenticationCodeMailable::class,
             'template' => 'laravel-security.emails.authentication-code',
-            'subject' => __('Login authentication code'),
+            'subject' => 'Login authentication code',
         ],
     ],
 
@@ -21,7 +21,7 @@ return [
                 'enabled' => true,
                 'mailable' => Sicaboy\LaravelSecurity\Mail\AccountTerminatedMailable::class,
                 'template' => 'laravel-security.emails.account-terminated',
-                'subject' => __('Your account has been terminated'),
+                'subject' => 'Your account has been terminated',
             ],
         ],
 
@@ -46,6 +46,7 @@ return [
 
     'database' => [
         'connection' => '',
+        'user_security_table' => 'user_security',
         'password_history_table' => 'password_history',
         'password_history_model' => Sicaboy\LaravelSecurity\Model\PasswordHistory::class,
         'user_model' => 'App\User',

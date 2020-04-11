@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePasswordTables extends Migration
+class CreateLaravelSecurityTables extends Migration
 {
     /**
      * {@inheritdoc}
@@ -27,7 +27,13 @@ class CreatePasswordTables extends Migration
             $table->string('password', 60);
             $table->timestamps();
         });
-
+        Schema::create(config('laravel-security.database.user_security_table'), function (Blueprint $table) {
+            $table->bigInteger('user_id');
+            $table->date('last_loggein_at');
+            $table->date('last_password_updated_at');
+            $table->integer('status')->default(10);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -38,5 +44,6 @@ class CreatePasswordTables extends Migration
     public function down()
     {
         Schema::dropIfExists(config('laravel-security.database.password_history_table'));
+        Schema::dropIfExists(config('laravel-security.database.user_security_table'));
     }
 }
