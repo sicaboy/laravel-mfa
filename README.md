@@ -37,7 +37,6 @@ php artisan vendor:publish --provider="Sicaboy\LaravelSecurity\LaravelSecuritySe
 
 ```php
 Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class,
-Siaboy\LaravelSecurity\Providers\EventSecurityServiceProvider::class,
 ```
 
 # Validators
@@ -49,13 +48,12 @@ Siaboy\LaravelSecurity\Providers\EventSecurityServiceProvider::class,
 - [NotAUsedPassword](src/Rules/NotAUsedPassword.php) - Avoid user to use a password which has been used before
 
 
-## Usage
+## Features
+
+### Disallow user to use a common password or a used password
 
 ```php
-
-// In a `FormRequest`
-// Add rule instance to the rules list
-
+// Add rule instance to the field validation rules list
 public function rules()
 {
     return [
@@ -77,15 +75,44 @@ public function rules()
 }
 ```
 
-## Event you need to call 
+#### Caution: extra event you need to call 
 
-There are events you should add to coresponding methods. 
-
-- If you use `NotAUsedPassword` validator, you need to call the following events:
+Login and reigster events are automatically traced.
+While there is an extra event you should add to call explicitly. 
 
 ```php
 // Call on user password change
-event(new \Sicaboy\LaravelSecurity\Events\UserPasswordChanged($user, $newPlainPassword));
+event(new \Illuminate\Auth\Events\PasswordReset($user));
+```
+
+### Password Policy
+
+- Delete accounts with days of no activity
+- Lock out accounts with days of no activity
+- Force change password
+
+You can enable function needed by setting config `enabled` to `true` in `config/laravel-security.php`
+
+```
+'password_policy' => [
+    // Delete accounts with days of no activity
+    'auto_delete_inactive_accounts' => [
+        'enabled' => true,
+        ...
+    ],
+
+    // Lock out accounts with days of no activity
+    'auto_lockout_inactive_accounts' => [
+        'enabled' => true,
+        ...
+    ],
+
+    // Force change password every x days
+    'force_change_password' => [
+        'enabled' => true,
+        ...
+    ],
+]
 ```
 
 ## Change log
