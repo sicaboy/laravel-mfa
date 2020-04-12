@@ -2,7 +2,6 @@
 
 [![Latest Stable Version](https://poser.pugx.org/sicaboy/laravel-mfa/v/stable.svg)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![License](https://poser.pugx.org/sicaboy/laravel-mfa/license.svg)](LICENSE.md)
-[![Quality Score](https://img.shields.io/scrutinizer/g/sicaboy/laravel-mfa.svg?style=flat-square)](https://scrutinizer-ci.com/g/sicaboy/laravel-mfa)
 [![Total Downloads](https://img.shields.io/packagist/dt/sicaboy/laravel-mfa.svg?style=flat-square)](https://packagist.org/packages/sicaboy/laravel-mfa)
 
 ## Introduction
