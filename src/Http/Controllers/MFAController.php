@@ -1,6 +1,6 @@
 <?php
 
-namespace Sicaboy\LaravelSecurity\Http\Controllers;
+namespace Sicaboy\LaravelMFA\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
@@ -16,16 +16,11 @@ class MFAController extends Controller
 
     public function getIndex(Request $request) {
 
-//        if (!Session::has('mfa_completed')) {
-        $config = config('laravel-security.multi_factor_authentication');
-
+        $config = config('laravel-mfa.multi_factor_authentication');
         $user = Auth::user();
-
         $code = rand(100000, 999999);
-
-        $minutes = config('laravel-security.multi_factor_authentication.code_expire_after_minutes', 10);
-
-        Cache::put(self::MFA_CODE_KEY, $code, $minutes);
+        $minutes = config('laravel-mfa.multi_factor_authentication.code_expire_after_minutes', 10);
+        Cache::put(self::MFA_CODE_KEY . '-' . $user->id, $code, $minutes);
 
         Mail::send($config['email']['template'], [
             'user' => $user,
@@ -36,19 +31,16 @@ class MFAController extends Controller
             $message->subject($config['email']['subject']);
         });
 
-        return redirect()->route('security.mfa-form', [
+        return redirect()->route('mfa.mfa-form', [
             'referer' => $request->get('referer')
         ]);
-//        }
     }
 
     public function getForm(Request $request) {
 
-        $config = config('laravel-security.multi_factor_authentication');
+        $minutes = config('laravel-mfa.multi_factor_authentication.code_expire_after_minutes', 10);
 
-        $minutes = config('laravel-security.multi_factor_authentication.code_expire_after_minutes', 10);
-
-        return view('laravel-security::mfa.form', [
+        return view('laravel-mfa::mfa.form', [
             'referer' => $request->get('referer'),
             'minutes' => $minutes,
         ]);
@@ -56,11 +48,8 @@ class MFAController extends Controller
 
     public function postForm(Request $request) {
 
-        $config = config('laravel-security.multi_factor_authentication');
-
-        $minutes = config('laravel-security.multi_factor_authentication.code_expire_after_minutes', 10);
-
-        $code = Cache::get(self::MFA_CODE_KEY);
+        $user = Auth::user();
+        $code = Cache::get(self::MFA_CODE_KEY . '-' . $user->id);
 
         if (!$code || trim($request->get('code')) != $code) {
             return redirect()->back()->withErrors([
@@ -69,7 +58,7 @@ class MFAController extends Controller
         }
 
         Session::put('mfa_completed', true);
-        
+
         return redirect()->to($request->get('referer', '/'));
     }
 

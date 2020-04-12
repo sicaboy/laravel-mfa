@@ -1,6 +1,6 @@
 <?php
 
-namespace Sicaboy\LaravelSecurity\Http\Middleware;
+namespace Sicaboy\LaravelMFA\Http\Middleware;
 
 use Closure;
 use Illuminate\Routing\UrlGenerator;
@@ -27,7 +27,7 @@ class MFA
      */
     public function handle($request, Closure $next)
     {
-        if (config('laravel-security.multi_factor_authentication.enabled') !== true) {
+        if (config('laravel-mfa.multi_factor_authentication.enabled') !== true) {
             return $next($request);
         }
 
@@ -37,7 +37,7 @@ class MFA
         }
 
         if (!Session::has('mfa_completed')) {
-            return redirect()->route('security.mfa', [
+            return redirect()->route('mfa.mfa', [
                 'referer' => $this->generator->previous()
             ]);
         }

@@ -1,13 +1,18 @@
 {
-    "name": "sicaboy/laravel-security",
+    "name": "sicaboy/laravel-mfa",
     "type": "library",
     "description": "",
     "keywords": [
         "laravel",
-        "passwords",
+        "multi-factor",
+        "two-factor",
+        "2-factor",
+        "MFA",
+        "2FA",
+        "authentication",
         "security"
     ],
-    "homepage": "https://github.com/sicaboy/laravel-security",
+    "homepage": "https://github.com/sicaboy/laravel-mfa",
     "license": "MIT",
     "authors": [
         {
@@ -27,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Sicaboy\\LaravelSecurity\\": "src"
+            "Sicaboy\\LaravelMFA\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Sicaboy\\LaravelSecurity\\Test": "tests"
+            "Sicaboy\\LaravelMFA\\Test": "tests"
         }
     },
     "scripts": {
@@ -44,8 +49,7 @@
         },
         "laravel": {
             "providers": [
-                "Sicaboy\\LaravelSecurity\\LaravelSecurityServiceProvider",
-                "Sicaboy\\LaravelSecurity\\Providers\\EventServiceProvider"
+                "Sicaboy\\LaravelMFA\\LaravelMFAServiceProvider"
             ]
         }
     }
