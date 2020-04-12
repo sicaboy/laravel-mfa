@@ -97,9 +97,9 @@ event(new \Illuminate\Auth\Events\PasswordReset($user));
 
 - Delete accounts with days of no activity
 - Lock out accounts with days of no activity
-- Force change password
+- Force change password every x days
 
-1. Enable function needed by setting config `enabled` to `true` in `config/laravel-security.php`
+1. To enable the first two policies, you need to set `enabled` to `true` in `config/laravel-security.php` as below:
 
 ```php
 'password_policy' => [
@@ -114,16 +114,10 @@ event(new \Illuminate\Auth\Events\PasswordReset($user));
         'enabled' => true,
         ...
     ],
-
-    // Force change password every x days
-    'force_change_password' => [
-        'enabled' => true,
-        ...
-    ],
 ]
 ```
 
-2. If you force user change password every x days, you will need to use this middleware
+2. To enable the policy "force user change password every x days", you will need to use this middleware
 
 ```php
 Route::middleware(['security'])->group(function () {
@@ -131,6 +125,18 @@ Route::middleware(['security'])->group(function () {
 });
 ```
 
+and set `enabled` to `true` and `change_password_url` in `config/laravel-security.php` as below:
+
+```php
+'password_policy' => [
+    // Force change password every x days
+    'force_change_password' => [
+        'enabled' => true,
+        'days_after_last_change' => 90, // every 90 days
+        'change_password_url' => '/user/change-password', // Change My Password page URL
+    ],
+]
+```
 
 3. Add the following commands to `app/Console/Kernel.php` of your application
 
