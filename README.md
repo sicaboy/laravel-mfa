@@ -33,7 +33,15 @@ Then do vendor publish:
 php artisan vendor:publish --provider="Sicaboy\LaravelSecurity\LaravelSecurityServiceProvider"
 ```
 
-- If you're on Laravel < 5.5, you'll need to register the service provider. Open up `config/app.php` and add the following to the `providers` array:
+After publish, you are able to modify templates and config in:
+
+```
+app/config/laravel-security.php
+resources/views/vendor/laravel-security/
+resources/lang/en/laravel-security.php
+```
+
+If you're on Laravel < 5.5, you'll need to register the service provider. Open up `config/app.php` and add the following to the `providers` array:
 
 ```php
 Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class,
@@ -148,7 +156,7 @@ protected function schedule(Schedule $schedule)
 
 ```php
 'multi_factor_authentication' => [
-    'enabled' => false,
+    'enabled' => true,
     ...
 ]
 ```
@@ -156,7 +164,6 @@ protected function schedule(Schedule $schedule)
 2. Attach the middleware to your routes to protect your pages.
 
 ```php
-
 Route::middleware(['mfa'])->group(function () {
     ...
 });

@@ -44,11 +44,12 @@ return [
         'force_change_password' => [
             'enabled' => false,
             'days_after_last_change' => 90,
+            'change_password_url' => '/your_path_to/user/change-password',
         ],
     ],
 
     'database' => [
-        'connection' => '',
+        'connection' => '', // Database connection for running database migration.
         'user_security_table' => 'user_extend_security',
         'user_security_model' => Sicaboy\LaravelSecurity\Model\UserExtendSecurity::class,
         'password_history_table' => 'password_history',
