@@ -117,10 +117,12 @@
                     <tr>
                         <td>
                             {{--<img src="{{ config('app.url') }}/images/logo-mail.png" />--}}
+                            <h3 class="collapse">
+                                {{ config('app.name') }}
+                            </h3>
                         </td>
                         <td align="right">
                             <h6 class="collapse">
-                                {{ config('app.name') }}
                             </h6>
                         </td>
                     </tr>

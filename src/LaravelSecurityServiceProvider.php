@@ -14,7 +14,6 @@ namespace Sicaboy\LaravelSecurity;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Cache;
-use Sicaboy\LaravelSecurity\Providers\EventServiceProvider;
 use Validator;
 
 class LaravelSecurityServiceProvider extends ServiceProvider
@@ -25,7 +24,13 @@ class LaravelSecurityServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->register(EventServiceProvider::class);
+        $this->app->register(\Sicaboy\LaravelSecurity\Providers\EventServiceProvider::class);
+
+        $this->app['router']->aliasMiddleware('mfa', \Sicaboy\LaravelSecurity\Http\Middleware\MFA::class);
+
+        $this->app['router']->aliasMiddleware('security', \Sicaboy\LaravelSecurity\Http\Middleware\Security::class);
+        
+        // $this->app['router']->pushMiddlewareToGroup('web', MyPackage\Middleware\WebOne::class);
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-security');
 

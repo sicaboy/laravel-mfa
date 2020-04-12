@@ -39,18 +39,16 @@ php artisan vendor:publish --provider="Sicaboy\LaravelSecurity\LaravelSecuritySe
 Siaboy\LaravelSecurity\LaravelSecurityServiceProvider::class,
 ```
 
-# Validators
 
-## Available Rules
+# Features
+
+## Disallow user to use a common password or a used password
+
+#### Available validators rules
 
 - [NotCommonPassword](src/Rules/NotCommonPassword.php) - Avoid user to use a common used password
 
 - [NotAUsedPassword](src/Rules/NotAUsedPassword.php) - Avoid user to use a password which has been used before
-
-
-## Features
-
-### Disallow user to use a common password or a used password
 
 ```php
 // Add rule instance to the field validation rules list
@@ -85,15 +83,17 @@ While there is an extra event you should add to call explicitly.
 event(new \Illuminate\Auth\Events\PasswordReset($user));
 ```
 
-### Password Policy
+## Password Policies
+
+#### Available policies
 
 - Delete accounts with days of no activity
 - Lock out accounts with days of no activity
 - Force change password
 
-You can enable function needed by setting config `enabled` to `true` in `config/laravel-security.php`
+1. Enable function needed by setting config `enabled` to `true` in `config/laravel-security.php`
 
-```
+```php
 'password_policy' => [
     // Delete accounts with days of no activity
     'auto_delete_inactive_accounts' => [
@@ -114,6 +114,54 @@ You can enable function needed by setting config `enabled` to `true` in `config/
     ],
 ]
 ```
+
+2. If you force user change password every x days, you will need to use this middleware
+
+```php
+Route::middleware(['security'])->group(function () {
+    ...
+});
+```
+
+
+3. Add the following commands to `app/Console/Kernel.php` of your application
+
+```php
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command(\Sicaboy\LaravelSecurity\Console\Commands\DeleteInactiveAccounts::class)
+             ->hourly();
+    $schedule->command(\Sicaboy\LaravelSecurity\Console\Commands\LockoutInactiveAccounts::class)
+             ->hourly();
+    ...
+}
+```
+3. Make sure you add the [Laravel scheduler](https://laravel.com/docs/7.x/scheduling#introduction) in your crontab 
+
+```
+* * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
+```  
+
+## Multi-factor Authentication
+
+1. Enable function needed by setting config `enabled` to `true` in `config/laravel-security.php`
+
+```php
+'multi_factor_authentication' => [
+    'enabled' => false,
+    ...
+]
+```
+
+2. Attach the middleware to your routes to protect your pages.
+
+```php
+
+Route::middleware(['mfa'])->group(function () {
+    ...
+});
+```
+
 
 ## Change log
 

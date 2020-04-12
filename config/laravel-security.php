@@ -4,12 +4,15 @@ return [
 
     'multi_factor_authentication' => [
         'enabled' => false,
-        'email_notification' => [
-            'enabled' => true,
+        'template' => 'laravel-security.mfa.form',
+        'code_expire_after_minutes' => 10,
+        'email' => [
             //'mailable' => Sicaboy\LaravelSecurity\Mail\AuthenticationCodeMailable::class,
-            'template' => 'laravel-security.emails.authentication-code',
+            'template' => 'laravel-security::emails.authentication-code',
             'subject' => 'Login authentication code',
         ],
+        // @todo
+        // 'sms' => []
     ],
 
     'password_policy' => [
@@ -20,7 +23,7 @@ return [
             'email_notification' => [
                 'enabled' => true,
                 //'mailable' => Sicaboy\LaravelSecurity\Mail\AccountTerminatedMailable::class,
-                'template' => 'laravel-security.emails.account-terminated',
+                'template' => 'laravel-security::emails.account-terminated',
                 'subject' => 'Your account has been terminated',
             ],
         ],
@@ -32,7 +35,7 @@ return [
             'email_notification' => [
                 'enabled' => true,
                 //'mailable' => Sicaboy\LaravelSecurity\Mail\AccountLockedMailable::class,
-                'template' => 'laravel-security.emails.account-locked',
+                'template' => 'laravel-security::emails.account-locked',
                 'subject' => 'Your account has been locked due to no activity',
             ],
         ],

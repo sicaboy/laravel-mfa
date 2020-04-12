@@ -1,4 +1,4 @@
-@extends('laravel-security.emails.base')
+@extends('laravel-security::emails.base')
 
 @section('content')
     <p class="lead">
