@@ -88,25 +88,6 @@ There are events you should add to coresponding methods.
 event(new \Sicaboy\LaravelSecurity\Events\UserPasswordChanged($user, $newPlainPassword));
 ```
 
-Example:
-
-```php
-    protected function create(array $data)
-    {
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-                
-        event(new \Sicaboy\LaravelSecurity\Events\UserRegistered($user, $data['password']));
-
-        return $user;
-    }
-
-    // Also in change password method... DIY
-```
-
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
