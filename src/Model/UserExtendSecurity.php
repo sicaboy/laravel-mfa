@@ -9,6 +9,9 @@ class UserExtendSecurity extends Model
     
     protected $guarded = ['id'];
 
+    const STATUS_NORMAL = 10;
+    const STATUS_LOCKED = -1;
+
     /**
      * Create a new Eloquent model instance.
      *

@@ -32,11 +32,6 @@ class LaravelSecurityServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang/', 'laravel-security');
 
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        
-        $this->commands([
-//                FooCommand::class,
-//                BarCommand::class,
-        ]);
 
         $this->registerRoutes();
 
@@ -53,6 +48,10 @@ class LaravelSecurityServiceProvider extends ServiceProvider
     protected function registerPublishing()
     {
         if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Sicaboy\LaravelSecurity\Console\Commands\DeleteInactiveAccounts::class,
+                \Sicaboy\LaravelSecurity\Console\Commands\LockoutInactiveAccounts::class,
+            ]);
             $this->publishes([
                 __DIR__.'/../config' => config_path(),
 //                __DIR__.'/../database/migrations' => database_path('migrations'),

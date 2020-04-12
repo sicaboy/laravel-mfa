@@ -6,7 +6,7 @@ return [
         'enabled' => false,
         'email_notification' => [
             'enabled' => true,
-            'mailable' => Sicaboy\LaravelSecurity\Mail\AuthenticationCodeMailable::class,
+            //'mailable' => Sicaboy\LaravelSecurity\Mail\AuthenticationCodeMailable::class,
             'template' => 'laravel-security.emails.authentication-code',
             'subject' => 'Login authentication code',
         ],
@@ -14,24 +14,24 @@ return [
 
     'password_policy' => [
         // Delete accounts with days of no activity
-        'auto_delete_account' => [
+        'auto_delete_inactive_accounts' => [
             'enabled' => false,
             'days_after_last_login' => 365,
             'email_notification' => [
                 'enabled' => true,
-                'mailable' => Sicaboy\LaravelSecurity\Mail\AccountTerminatedMailable::class,
+                //'mailable' => Sicaboy\LaravelSecurity\Mail\AccountTerminatedMailable::class,
                 'template' => 'laravel-security.emails.account-terminated',
                 'subject' => 'Your account has been terminated',
             ],
         ],
 
         // Lock out accounts with days of no activity
-        'auto_lock_account' => [
+        'auto_lockout_inactive_accounts' => [
             'enabled' => false,
             'days_after_last_login' => 90,
             'email_notification' => [
                 'enabled' => true,
-                'mailable' => Sicaboy\LaravelSecurity\Mail\AccountLockedMailable::class,
+                //'mailable' => Sicaboy\LaravelSecurity\Mail\AccountLockedMailable::class,
                 'template' => 'laravel-security.emails.account-locked',
                 'subject' => 'Your account has been locked due to no activity',
             ],

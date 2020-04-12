@@ -21,6 +21,9 @@ class CreateLaravelSecurityTables extends Migration
      */
     public function up()
     {
+        if (!config('laravel-security')) {
+            throw new \Exception('Cannot read config [laravel-security]. Have you done vendor:publish?');
+        }
         Schema::create(config('laravel-security.database.password_history_table'), function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('user_id');
