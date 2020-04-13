@@ -61,6 +61,12 @@ Route::middleware(['mfa'])->group(function () {
 });
 ```
 
+## TODO
+
+- Queue email sending
+
+- Switch on MFA on specific users (db field based)
+
 ## Change log
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
