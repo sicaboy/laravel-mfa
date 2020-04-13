@@ -29,7 +29,7 @@ Then do vendor publish:
 php artisan vendor:publish --provider="Sicaboy\LaravelMFA\LaravelMFAServiceProvider"
 ```
 
-After publish, you are able to modify templates and config in:
+After publishing, you can modify templates and config in:
 
 ```
 app/config/laravel-mfa.php
@@ -65,9 +65,9 @@ Route::middleware(['mfa'])->group(function () {
 
 - Queue email sending
 
-- Switch on MFA on specific users (db field based)
+- Switch on MFA on specific users (DB field-based)
 
-## Change log
+## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
