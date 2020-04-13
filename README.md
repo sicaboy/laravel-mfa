@@ -44,16 +44,7 @@ Siaboy\LaravelMFA\LaravelMFAServiceProvider::class,
 
 # Usage
 
-1. Enable function needed by setting config `enabled` to `true` in `config/laravel-mfa.php`
-
-```php
-'multi_factor_authentication' => [
-    'enabled' => true,
-    ...
-]
-```
-
-2. Attach the middleware to your routes to protect your pages.
+Attach the middleware to your routes to protect your pages.
 
 ```php
 Route::middleware(['mfa'])->group(function () {

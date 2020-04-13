@@ -12,7 +12,6 @@ class MFA
 
     protected $generator;
 
-
     public function __construct(UrlGenerator $generator)
     {
         $this->generator = $generator;
@@ -27,10 +26,6 @@ class MFA
      */
     public function handle($request, Closure $next)
     {
-        if (config('laravel-mfa.multi_factor_authentication.enabled') !== true) {
-            return $next($request);
-        }
-
         $user = Auth::user();
         if (!$user) {
             return redirect()->route('login');

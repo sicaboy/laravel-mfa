@@ -16,10 +16,10 @@ class MFAController extends Controller
 
     public function getIndex(Request $request) {
 
-        $config = config('laravel-mfa.multi_factor_authentication');
+        $config = config('laravel-mfa');
         $user = Auth::user();
         $code = rand(100000, 999999);
-        $minutes = config('laravel-mfa.multi_factor_authentication.code_expire_after_minutes', 10);
+        $minutes = config('laravel-mfa.code_expire_after_minutes', 10);
         Cache::put(self::MFA_CODE_KEY . '-' . $user->id, $code, $minutes);
 
         Mail::send($config['email']['template'], [
@@ -38,7 +38,7 @@ class MFAController extends Controller
 
     public function getForm(Request $request) {
 
-        $minutes = config('laravel-mfa.multi_factor_authentication.code_expire_after_minutes', 10);
+        $minutes = config('laravel-mfa.code_expire_after_minutes', 10);
 
         return view('laravel-mfa::mfa.form', [
             'referer' => $request->get('referer'),
