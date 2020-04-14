@@ -29,7 +29,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-10" id="re_send_code_hint" style="visibility: hidden">
-                                <div class="col-md-6 offset-md-4">
+                                <div class="col-md-6 offset-md-4 col-md-offset-4">
                                     <span class="text-muted">
                                         {{ __("Haven't received the code? Try ") }}
                                     </span>
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
+                                <div class="col-md-6 offset-md-4 col-md-offset-4">
                                     <button type="submit" class="btn btn-primary">
                                         {{ __('Submit') }}
                                     </button>

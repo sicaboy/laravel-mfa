@@ -14,20 +14,33 @@ class MFAController extends Controller
 
     const MFA_CODE_KEY = 'mfa_code';
 
+    protected $authUser;
+
+    protected function getAuthUser() {
+        if ($this->authUser) {
+            return $this->authUser;
+        }
+
+        $closure = config('laravel-mfa.auth_user_closure', function() {
+            return Auth::user();
+        });
+        $this->authUser = call_user_func($closure);
+        return $this->authUser;
+    }
+
     public function getIndex(Request $request) {
 
         $config = config('laravel-mfa');
-        $user = Auth::user();
         $code = rand(100000, 999999);
         $minutes = config('laravel-mfa.code_expire_after_minutes', 10);
-        Cache::put(self::MFA_CODE_KEY . '-' . $user->id, $code, $minutes);
+        Cache::put(self::MFA_CODE_KEY . '-' . $this->getAuthUser()->id, $code, $minutes);
 
         Mail::send($config['email']['template'], [
-            'user' => $user,
+            'user' => $this->getAuthUser(),
             'code' => $code,
             'minutes' => $minutes,
-        ], function($message) use ($user, $config) {
-            $message->to($user->email);
+        ], function($message) use ($config) {
+            $message->to($this->getAuthUser()->email);
             $message->subject($config['email']['subject']);
         });
 
@@ -48,8 +61,7 @@ class MFAController extends Controller
 
     public function postForm(Request $request) {
 
-        $user = Auth::user();
-        $code = Cache::get(self::MFA_CODE_KEY . '-' . $user->id);
+        $code = Cache::get(self::MFA_CODE_KEY . '-' . $this->getAuthUser()->id);
 
         if (!$code || trim($request->get('code')) != $code) {
             return redirect()->back()->withErrors([
@@ -59,7 +71,7 @@ class MFAController extends Controller
 
         Session::put('mfa_completed', true);
 
-        return redirect()->to($request->get('referer', '/'));
+        return redirect()->to($request->get('referer', config('app.url')));
     }
 
 }

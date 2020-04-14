@@ -3,6 +3,10 @@
 return [
     'template' => 'laravel-mfa::mfa.form',
     'code_expire_after_minutes' => 10,
+    'login_route' => 'admin.login',
+    'auth_user_closure' => function() {
+        return \Illuminate\Support\Facades\Auth::user();
+    },
     'email' => [
         //'mailable' => Sicaboy\LaravelMFA\Mail\AuthenticationCodeMailable::class,
         'template' => 'laravel-mfa::emails.authentication-code',

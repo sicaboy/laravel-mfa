@@ -26,9 +26,12 @@ class MFA
      */
     public function handle($request, Closure $next)
     {
-        $user = Auth::user();
+        $closure = config('laravel-mfa.auth_user_closure', function() {
+            return Auth::user();
+        });
+        $user = call_user_func($closure);
         if (!$user) {
-            return redirect()->route('login');
+            return redirect()->route(config('laravel-mfa.login_route', 'login'));
         }
 
         if (!Session::has('mfa_completed')) {
