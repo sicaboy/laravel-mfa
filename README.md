@@ -44,6 +44,8 @@ Siaboy\LaravelMFA\LaravelMFAServiceProvider::class,
 
 # Usage
 
+### General Usage
+
 Attach the middleware to your routes to protect your pages.
 
 ```php
@@ -52,7 +54,8 @@ Route::middleware(['mfa'])->group(function () {
 });
 ```
 
-If you use different `Auth` object, for example user auth and admin auth, you can apply following to enable MFA for admin pages. 
+### If Using Different Auth Objects
+If you use different `Auth` objects, for example user auth and admin auth, you can apply following to enable MFA for admin pages. 
 
 - Attach the middleware to your routes.
 
@@ -62,7 +65,7 @@ Route::middleware(['mfa:admin'])->group(function () {
 });
 ```
 
-- Add config group in your `config/laravel-mfa.php`
+- Add a group in your config file `config/laravel-mfa.php`
 
 ```php
 return [
