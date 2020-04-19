@@ -6,15 +6,18 @@ use Closure;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 
 class MFA
 {
 
     protected $generator;
+    protected $helper;
 
-    public function __construct(UrlGenerator $generator)
+    public function __construct(UrlGenerator $generator, MFAHelper $helper)
     {
         $this->generator = $generator;
+        $this->helper = $helper;
     }
 
     /**
@@ -22,23 +25,41 @@ class MFA
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
+     * @param string $group
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next, $group = 'default')
     {
-        $closure = config('laravel-mfa.auth_user_closure', function() {
-            return Auth::user();
-        });
-        $user = call_user_func($closure);
-        if (!$user) {
-            return redirect()->route(config('laravel-mfa.login_route', 'login'));
+
+        if (!$this->helper->getUserModel($group)) {
+            // No Auth::user returned. Not login yet
+            return $request->wantsJson()
+                ? response()->json([
+                    'error' => 'Login required',
+                    'url' => $this->helper->getConfigByGroup('login_route', $group, 'login')
+                ], 403)
+                : redirect()->route(
+                    $this->helper->getConfigByGroup('login_route', $group, 'login')
+                );
         }
 
-        if (!Session::has('mfa_completed')) {
-            return redirect()->route('mfa.mfa', [
-                'referer' => $this->generator->previous()
-            ]);
+        if (!$this->helper->isVerificationCompleted($group)) {
+            // User hasn't completed MFA verification
+            return $request->wantsJson()
+                ? response()->json([
+                    'error' => 'MFA Required',
+                    'url' => route('mfa.mfa', [
+                        'group' => $group,
+                        'referer' => $this->generator->previous()
+                    ])
+                ], 423)
+                : redirect()->route('mfa.mfa', [
+                    'group' => $group,
+                    'referer' => $this->generator->previous()
+                ]);
         }
+
         return $next($request);
     }
+
 }

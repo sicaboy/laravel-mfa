@@ -52,9 +52,54 @@ Route::middleware(['mfa'])->group(function () {
 });
 ```
 
-## TODO
+If you use different `Auth` object, for example user auth and admin auth, you can apply following to enable MFA for admin pages. 
 
-- Queue email sending
+- Attach the middleware to your routes.
+
+```php
+Route::middleware(['mfa:admin'])->group(function () {
+    ...
+});
+```
+
+- Add config group in your `config/laravel-mfa.php`
+
+```php
+return [
+    'default' => [
+        ...
+    ],
+    'group' 
+        'admin' => [ // Example, when using middleware 'mfa:admin'. Attributes not mentioned will be inherit from `default` above
+            'login_route' => 'admin.login',
+            'auth_user_closure' => function() {
+                return \Encore\Admin\Facades\Admin::user();
+            },
+        ],
+        'other_name' => [ // Middleware 'mfa:other_name'
+            ...
+        ]
+    ],
+```
+
+## Queue
+
+If your application has a `artisan queue:work` daemon running, you can send auth code in a queue by changing the config.
+
+```php
+return [
+    'default' => [
+        ...
+        'email' => [
+            'queue' => true,
+        ...
+        ]
+    ]
+]
+```
+
+
+## TODO
 
 - Switch on MFA on specific users (DB field-based)
 

@@ -24,6 +24,9 @@ class LaravelMFAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        $this->app->register(\Sicaboy\LaravelMFA\Providers\EventServiceProvider::class);
+
         $this->app['router']->aliasMiddleware('mfa', \Sicaboy\LaravelMFA\Http\Middleware\MFA::class);
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-mfa');
