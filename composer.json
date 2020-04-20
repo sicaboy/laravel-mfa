@@ -1,7 +1,7 @@
 {
     "name": "sicaboy/laravel-mfa",
     "type": "library",
-    "description": "",
+    "description": "A Laravel package of Multi-factor Authentication (MFA/2FA) with a middleware.",
     "keywords": [
         "laravel",
         "multi-factor",
