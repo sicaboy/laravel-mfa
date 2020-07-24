@@ -2,6 +2,7 @@
 
 return [
     'default' => [
+        'enabled' => config('MFA_ENABLED', true),
         'template' => 'laravel-mfa::mfa.form',
         'code_expire_after_minutes' => 10,
         'login_route' => 'login',  // Route name

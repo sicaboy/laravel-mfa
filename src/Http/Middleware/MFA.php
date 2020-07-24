@@ -30,7 +30,9 @@ class MFA
      */
     public function handle($request, Closure $next, $group = 'default')
     {
-
+        if ($this->helper->getConfigByGroup('enabled', $group) == false) {
+            return $next($request);
+        }
         if (!$this->helper->getUserModel($group)) {
             // No Auth::user returned. Not login yet
             return $request->wantsJson()
