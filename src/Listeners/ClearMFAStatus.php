@@ -29,7 +29,7 @@ class ClearMFAStatus
     public function handle($event)
     {
         if(!empty($event->user->id)) {
-            $groups = array_keys(config("laravel-mfa.group"));
+            $groups = array_keys(config("laravel-mfa.group", []));
             $groups[] = 'default';
             foreach ($groups as $group) {
                 $this->helper->clearVerificationCompleted($group, $event->user->id);
