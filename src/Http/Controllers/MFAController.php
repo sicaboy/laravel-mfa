@@ -54,7 +54,9 @@ class MFAController extends Controller
         }
 
         if ($this->helper->isVerificationCompleted($this->configGroup)) {
-            return redirect()->to(config('app.url'));
+            return redirect()->route(
+                $this->helper->getConfigByGroup('login_route', $this->configGroup, 'login')
+            );
         }
         return false;
     }
