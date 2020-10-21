@@ -67,8 +67,7 @@ class MFAController extends Controller
 
         $code = rand(100000, 999999);
         $minutes = $this->helper->getConfigByGroup('code_expire_after_minutes', $this->configGroup, 10);
-        Cache::put($this->getCodeCacheKey(), $code, $minutes);
-
+        Cache::put($this->getCodeCacheKey(), $code, $minutes*60);
 
         $emailTemplate = $this->helper->getConfigByGroup('email.template', $this->configGroup);
         $emailVars = [
