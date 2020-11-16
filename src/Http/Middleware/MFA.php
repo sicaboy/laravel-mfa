@@ -4,8 +4,6 @@ namespace Sicaboy\LaravelMFA\Http\Middleware;
 
 use Closure;
 use Illuminate\Routing\UrlGenerator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 
 class MFA
@@ -50,14 +48,12 @@ class MFA
             return $request->wantsJson()
                 ? response()->json([
                     'error' => 'MFA Required',
-                    'url' => route('mfa.mfa', [
+                    'url' => route('mfa.generate', [
                         'group' => $group,
-                        'referer' => $this->generator->previous()
                     ])
                 ], 423)
-                : redirect()->route('mfa.mfa', [
+                : redirect()->route('mfa.generate', [
                     'group' => $group,
-                    'referer' => $this->generator->previous()
                 ]);
         }
 

@@ -54,14 +54,17 @@ class MFAController extends Controller
         }
 
         if ($this->helper->isVerificationCompleted($this->configGroup)) {
-            $nextRoute = $this->helper->getConfigByGroup('verified_route', $this->configGroup);
-            if ($nextRoute) {
-                return redirect()->route($nextRoute);
-            } else {
-                return redirect()->to(config('app.url', '/'));
-            }
+            $this->redirectToVerifiedRoute();
         }
         return false;
+    }
+
+    protected function redirectToVerifiedRoute() {
+        $nextRoute = $this->helper->getConfigByGroup('verified_route', $this->configGroup);
+        if ($nextRoute) {
+            return redirect()->route($nextRoute);
+        }
+        return redirect()->to(config('app.url', '/'));
     }
 
     public function getIndex(Request $request) {
@@ -90,9 +93,8 @@ class MFAController extends Controller
         }
 
 
-        return redirect()->route('mfa.mfa-form', [
+        return redirect()->route('mfa.form', [
             'group' => $this->configGroup,
-            'referer' => $request->get('referer')
         ]);
     }
 
@@ -106,7 +108,6 @@ class MFAController extends Controller
 
         return view('laravel-mfa::mfa.form', [
             'group' => $this->configGroup,
-            'referer' => $request->get('referer'),
             'minutes' => $minutes,
         ]);
     }
@@ -126,7 +127,8 @@ class MFAController extends Controller
         }
         $this->helper->setVerificationCompleted($this->configGroup);
 
-        return redirect()->to($request->get('referer', config('app.url')));
+        // Redirect to a group specific URL, otherwise redirect to app.url
+        return $this->redirectToVerifiedRoute();
     }
 
 }

@@ -10,9 +10,6 @@
                     <div class="card-body">
                         <form method="POST" action="" aria-label="{{ __('Multi-factor Authentication') }}">
                             @csrf
-
-                            <input type="hidden" name="referer" value="{{ $referer }}">
-
                             <div class="alert alert-secondary" role="alert">
                                 {{ __("The authentication code has been sent to your e-mail and the code will expire after :minutes minutes.", ['minutes' => $minutes]) }}
                             </div>
@@ -33,7 +30,7 @@
                                     <span class="text-muted">
                                         {{ __("Haven't received the code? Try ") }}
                                     </span>
-                                    <a id="re_send_code_link" href="{{route('mfa.mfa', ['referer' => $referer])}}">
+                                    <a id="re_send_code_link" href="{{route('mfa.generate')}}">
                                         {{ __('re-send auth code') }}
                                     </a>
                                 </div>
@@ -45,7 +42,13 @@
                                     </button>
                                 </div>
                             </div>
-
+                            <div class="form-group row mb-0">
+                                <div class="col-md-6 offset-md-4 col-md-offset-4">
+                                    <a href="{{ route('logout') }}" class="btn btn-link">
+                                        {{ __('Cancel') }}
+                                    </a>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -58,6 +61,6 @@ setTimeout(function() {
     document.getElementById("re_send_code_link").addEventListener("click", function(){
         document.getElementById('re_send_code_hint').style.visibility = 'hidden';
     });
-}, 10000);
+}, 2000);
 </script>
 @endsection
