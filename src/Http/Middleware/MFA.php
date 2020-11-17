@@ -6,10 +6,21 @@ use Closure;
 use Illuminate\Routing\UrlGenerator;
 use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 
+/**
+ * Class MFA
+ * @package Sicaboy\LaravelMFA\Http\Middleware
+ */
 class MFA
 {
 
+    /**
+     * @var UrlGenerator
+     */
     protected $generator;
+
+    /**
+     * @var MFAHelper
+     */
     protected $helper;
 
     public function __construct(UrlGenerator $generator, MFAHelper $helper)
@@ -59,5 +70,4 @@ class MFA
 
         return $next($request);
     }
-
 }

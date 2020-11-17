@@ -11,23 +11,41 @@ use Illuminate\Support\Facades\Session;
 use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 use Sicaboy\LaravelMFA\Mail\SendMFAMail;
 
+/**
+ * Class MFAController
+ * @package Sicaboy\LaravelMFA\Http\Controllers
+ */
 class MFAController extends Controller
 {
 
-    const MFA_CODE_KEY = 'mfa_code';
+    public const MFA_CODE_KEY = 'mfa_code';
 
+    /**
+     * @var \Illuminate\Contracts\Auth\Authenticatable|null
+     */
     protected $authUser;
 
+    /**
+     * @var MFAHelper
+     */
     protected $helper;
 
+    /**
+     * @var string|null
+     */
     protected $configGroup;
 
-    public function __construct(MFAHelper $helper, Request $request) {
+    public function __construct(MFAHelper $helper, Request $request)
+    {
         $this->helper = $helper;
         $this->configGroup = $request->get('group');
     }
 
-    protected function getAuthUser() {
+    /**
+     * @return \Illuminate\Contracts\Auth\Authenticatable|mixed|null
+     */
+    protected function getAuthUser()
+    {
         if ($this->authUser) {
             return $this->authUser;
         }
@@ -35,12 +53,19 @@ class MFAController extends Controller
         return $this->authUser;
     }
 
-    protected function getCodeCacheKey() {
+    /**
+     * @return string
+     */
+    protected function getCodeCacheKey()
+    {
         return self::MFA_CODE_KEY . '-' . $this->configGroup . '-' . $this->getAuthUser()->id;
     }
 
-    protected function userNotLoggedInRedirect() {
-
+    /**
+     * @return false|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    protected function userNotLoggedInRedirect()
+    {
         if (!$this->getAuthUser()) {
             // No Auth::user returned. Not login yet
             return request()->wantsJson()
@@ -59,7 +84,11 @@ class MFAController extends Controller
         return false;
     }
 
-    protected function redirectToVerifiedRoute() {
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    protected function redirectToVerifiedRoute()
+    {
         $nextRoute = $this->helper->getConfigByGroup('verified_route', $this->configGroup);
         if ($nextRoute) {
             return redirect()->route($nextRoute);
@@ -67,15 +96,18 @@ class MFAController extends Controller
         return redirect()->to(config('app.url', '/'));
     }
 
-    public function getIndex(Request $request) {
-
+    /**
+     * @param  Request  $request
+     * @return false|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function getIndex(Request $request)
+    {
         if ($redirect = $this->userNotLoggedInRedirect()) {
             return $redirect;
         }
 
-        $code = rand(100000, 999999);
         $minutes = $this->helper->getConfigByGroup('code_expire_after_minutes', $this->configGroup, 10);
-        Cache::put($this->getCodeCacheKey(), $code, $minutes*60);
+        $code = $this->helper->refreshVerificationCode($this->getCodeCacheKey(), $minutes);
 
         $emailTemplate = $this->helper->getConfigByGroup('email.template', $this->configGroup);
         $emailVars = [
@@ -85,21 +117,28 @@ class MFAController extends Controller
         ];
 
         $mailer = Mail::to($this->getAuthUser()->email);
-        $mailable = new SendMFAMail($emailTemplate, $emailVars, $this->helper->getConfigByGroup('email.subject', $this->configGroup));
+        $mailable = new SendMFAMail(
+            $emailTemplate,
+            $emailVars,
+            $this->helper->getConfigByGroup('email.subject', $this->configGroup)
+        );
         if ($this->helper->getConfigByGroup('email.queue', $this->configGroup)) {
             $mailer->queue($mailable);
         } else {
             $mailer->send($mailable);
         }
 
-
         return redirect()->route('mfa.form', [
             'group' => $this->configGroup,
         ]);
     }
 
-    public function getForm(Request $request) {
-
+    /**
+     * @param  Request  $request
+     * @return false|\Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\View\View
+     */
+    public function getForm(Request $request)
+    {
         if ($redirect = $this->userNotLoggedInRedirect()) {
             return $redirect;
         }
@@ -112,8 +151,12 @@ class MFAController extends Controller
         ]);
     }
 
-    public function postForm(Request $request) {
-
+    /**
+     * @param  Request  $request
+     * @return false|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     */
+    public function postForm(Request $request)
+    {
         if ($redirect = $this->userNotLoggedInRedirect()) {
             return $redirect;
         }
@@ -130,5 +173,4 @@ class MFAController extends Controller
         // Redirect to a group specific URL, otherwise redirect to app.url
         return $this->redirectToVerifiedRoute();
     }
-
 }

@@ -8,31 +8,37 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 
+/**
+ * Class SendMFAMail
+ * @package Sicaboy\LaravelMFA\Mail
+ */
 class SendMFAMail extends Mailable
 {
-    use Queueable, SerializesModels;
-
-    protected $emailTemplate;
-    protected $emailVars;
-    protected $emailSubject;
+    use Queueable;
+    use SerializesModels;
 
     /**
-     * Create a new message instance.
-     *
-     * @return void
+     * @var string
      */
-    public function __construct($emailTemplate, $emailVars, $emailSubject)
+    protected $emailTemplate;
+
+    /**
+     * @var array
+     */
+    protected $emailVars;
+
+    /**
+     * @var string
+     */
+    protected $emailSubject;
+
+    public function __construct(string $emailTemplate, array $emailVars, string $emailSubject)
     {
         $this->emailTemplate = $emailTemplate;
         $this->emailVars = $emailVars;
         $this->emailSubject = $emailSubject;
     }
-
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
+    
     public function build()
     {
         return $this->view($this->emailTemplate)

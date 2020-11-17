@@ -16,6 +16,10 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Cache;
 use Validator;
 
+/**
+ * Class LaravelMFAServiceProvider
+ * @package Sicaboy\LaravelMFA
+ */
 class LaravelMFAServiceProvider extends ServiceProvider
 {
 
@@ -24,17 +28,11 @@ class LaravelMFAServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
         $this->app->register(\Sicaboy\LaravelMFA\Providers\EventServiceProvider::class);
-
         $this->app['router']->aliasMiddleware('mfa', \Sicaboy\LaravelMFA\Http\Middleware\MFA::class);
-
-        $this->loadViewsFrom(__DIR__.'/../resources/views', 'laravel-mfa');
-
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laravel-mfa');
         $this->registerRoutes();
-
         $this->registerPublishing();
-
     }
 
 
@@ -47,8 +45,8 @@ class LaravelMFAServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config' => config_path(),
-                __DIR__.'/../resources/views' => resource_path('views/vendor/laravel-mfa'),
+                __DIR__ . '/../config' => config_path(),
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/laravel-mfa'),
             ], 'laravel-mfa');
         }
     }
@@ -62,7 +60,7 @@ class LaravelMFAServiceProvider extends ServiceProvider
     protected function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
+            $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         });
     }
 
@@ -80,5 +78,4 @@ class LaravelMFAServiceProvider extends ServiceProvider
             'middleware' => 'web',
         ];
     }
-
 }

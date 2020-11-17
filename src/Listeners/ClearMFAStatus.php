@@ -6,6 +6,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 
+/**
+ * Class ClearMFAStatus
+ * @package Sicaboy\LaravelMFA\Listeners
+ */
 class ClearMFAStatus
 {
     protected $helper;
@@ -28,7 +32,7 @@ class ClearMFAStatus
      */
     public function handle($event)
     {
-        if(!empty($event->user->id)) {
+        if (!empty($event->user->id)) {
             $groups = array_keys(config("laravel-mfa.group", []));
             $groups[] = 'default';
             foreach ($groups as $group) {
