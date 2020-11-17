@@ -30,7 +30,7 @@
                                     <span class="text-muted">
                                         {{ __("Haven't received the code? Try ") }}
                                     </span>
-                                    <a id="re_send_code_link" href="{{route('mfa.generate')}}">
+                                    <a id="re_send_code_link" href="{{route('mfa.generate', ['group' => $group])}}">
                                         {{ __('re-send auth code') }}
                                     </a>
                                 </div>
