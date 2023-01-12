@@ -2,12 +2,11 @@
 
 namespace Sicaboy\LaravelMFA\Http\Controllers;
 
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Sicaboy\LaravelMFA\Helpers\MFAHelper;
 use Sicaboy\LaravelMFA\Mail\SendMFAMail;
 
@@ -21,7 +20,7 @@ class MFAController extends Controller
     public const MFA_CODE_KEY = 'mfa_code';
 
     /**
-     * @var \Illuminate\Contracts\Auth\Authenticatable|null
+     * @var Authenticatable|null
      */
     protected $authUser;
 
@@ -42,7 +41,7 @@ class MFAController extends Controller
     }
 
     /**
-     * @return \Illuminate\Contracts\Auth\Authenticatable|mixed|null
+     * @return Authenticatable|mixed|null
      */
     protected function getAuthUser()
     {
