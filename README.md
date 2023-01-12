@@ -14,7 +14,7 @@ This package provides a Middleware to protect pages with MFA in your Laravel pro
 ## Installation
 
 Requirements:
-- [PHP](https://php.net) 5.5+ 
+- [PHP](https://php.net) 5.5+, 7.*, 8.0+
 - [Composer](https://getcomposer.org)
 
 To get the latest version of Laravel MFA, simply run:
