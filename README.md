@@ -39,7 +39,7 @@ resources/views/vendor/laravel-mfa/
 If you're on Laravel < 5.5, you'll need to register the service provider. Open up `config/app.php` and add the following to the `providers` array:
 
 ```php
-Siaboy\LaravelMFA\LaravelMFAServiceProvider::class,
+Sicaboy\LaravelMFA\LaravelMFAServiceProvider::class,
 ```
 
 # Usage
