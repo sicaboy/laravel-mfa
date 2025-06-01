@@ -13,12 +13,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: [7.4, 8.0, 8.1, 8.2, 8.3]
-        laravel: [8.*, 9.*, 10.*, 11.*]
+        php: [8.0, 8.1, 8.2, 8.3]
+        laravel: [8.*, 9.*, 10.*]
         dependency-version: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 11.*
-            testbench: 9.*
           - laravel: 10.*
             testbench: 8.*
           - laravel: 9.*
@@ -26,10 +24,10 @@ jobs:
           - laravel: 8.*
             testbench: 6.*
         exclude:
-          - laravel: 11.*
-            php: 7.4
+          # Laravel 10 requires PHP 8.1+
           - laravel: 10.*
-            php: 7.4
+            php: 8.0
+          # Laravel 9 requires PHP 8.0+
           - laravel: 9.*
             php: 7.4
 
