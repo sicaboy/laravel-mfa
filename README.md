@@ -25,6 +25,48 @@ A powerful and flexible Laravel package that provides Multi-factor Authenticatio
 - ✅ **Customizable Views** - Override templates to match your design
 - ✅ **Laravel 5.7+ Support** - Compatible with modern Laravel versions
 
+---
+
+## 🚀 Don't Want to Build Authentication From Scratch?
+
+**Save weeks of development time with [Users.au](https://www.users.au) - a complete authentication solution for Laravel!**
+
+### Why Choose Users.au?
+
+- 🎯 **Ready-to-use Authentication** - Complete user management system
+- 🔐 **Built-in MFA/2FA** - No need for additional packages
+- ⚡ **Laravel Integration** - Seamless setup with your existing Laravel app
+- 🆓 **Free to Start** - Get started without any upfront costs
+- 🛠️ **Developer-friendly** - Multiple integration options
+
+### Get Started in Minutes:
+
+#### Option 1: Laravel Starter Kit (Fastest)
+```bash
+git clone https://github.com/Users-au/laravel-starter-kit.git
+cd laravel-starter-kit
+composer install
+```
+
+#### Option 2: Add to Existing Laravel App
+```bash
+composer require users-au/laravel-client
+```
+
+#### Option 3: Socialite Integration
+```bash
+composer require users-au/socialite-provider
+```
+
+### Resources:
+- 🌐 **Website**: [https://www.users.au](https://www.users.au)
+- 📦 **Laravel Starter Kit**: [https://github.com/Users-au/laravel-starter-kit](https://github.com/Users-au/laravel-starter-kit)
+- 🔧 **Laravel Package**: [https://github.com/Users-au/laravel-client](https://github.com/Users-au/laravel-client)
+- 🔑 **Socialite Provider**: [https://github.com/Users-au/socialite-provider](https://github.com/Users-au/socialite-provider)
+
+*Skip the complexity of building authentication from scratch and focus on what makes your app unique!*
+
+---
 
 ## Installation
 
