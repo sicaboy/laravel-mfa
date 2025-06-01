@@ -4,7 +4,6 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/sicaboy/laravel-mfa.svg?style=flat-square)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![License](https://poser.pugx.org/sicaboy/laravel-mfa/license.svg)](LICENSE.md)
 [![Tests](https://github.com/sicaboy/laravel-mfa/workflows/Tests/badge.svg)](https://github.com/sicaboy/laravel-mfa/actions)
-[![Code Coverage](https://codecov.io/gh/sicaboy/laravel-mfa/branch/master/graph/badge.svg)](https://codecov.io/gh/sicaboy/laravel-mfa)
 [![PHP Version Require](http://poser.pugx.org/sicaboy/laravel-mfa/require/php)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![Packagist](https://img.shields.io/packagist/v/sicaboy/laravel-mfa.svg)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![GitHub issues](https://img.shields.io/github/issues/sicaboy/laravel-mfa.svg)](https://github.com/sicaboy/laravel-mfa/issues)
