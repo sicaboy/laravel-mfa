@@ -30,6 +30,8 @@ A powerful and flexible Laravel package that provides Multi-factor Authenticatio
 
 **Save weeks of development time with [Users.au](https://www.users.au) - a complete authentication solution for Laravel!**
 
+![Users.au MFA Screenshot](https://www.users.au/screenshots/mfa.png)
+
 ### Why Choose Users.au?
 
 - 🎯 **Ready-to-use Authentication** - Complete user management system
