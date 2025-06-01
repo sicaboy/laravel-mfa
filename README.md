@@ -1,78 +1,101 @@
 # Laravel Multi-factor Authentication (MFA) / Two-factor Authentication (2FA)
 
 [![Latest Stable Version](https://poser.pugx.org/sicaboy/laravel-mfa/v/stable.svg)](https://packagist.org/packages/sicaboy/laravel-mfa)
-[![License](https://poser.pugx.org/sicaboy/laravel-mfa/license.svg)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/sicaboy/laravel-mfa.svg?style=flat-square)](https://packagist.org/packages/sicaboy/laravel-mfa)
+[![License](https://poser.pugx.org/sicaboy/laravel-mfa/license.svg)](LICENSE.md)
+[![Tests](https://github.com/sicaboy/laravel-mfa/workflows/Tests/badge.svg)](https://github.com/sicaboy/laravel-mfa/actions)
+[![Code Coverage](https://codecov.io/gh/sicaboy/laravel-mfa/branch/master/graph/badge.svg)](https://codecov.io/gh/sicaboy/laravel-mfa)
+[![PHP Version Require](http://poser.pugx.org/sicaboy/laravel-mfa/require/php)](https://packagist.org/packages/sicaboy/laravel-mfa)
+[![Packagist](https://img.shields.io/packagist/v/sicaboy/laravel-mfa.svg)](https://packagist.org/packages/sicaboy/laravel-mfa)
+[![GitHub issues](https://img.shields.io/github/issues/sicaboy/laravel-mfa.svg)](https://github.com/sicaboy/laravel-mfa/issues)
+[![GitHub stars](https://img.shields.io/github/stars/sicaboy/laravel-mfa.svg)](https://github.com/sicaboy/laravel-mfa/stargazers)
 
 ## Introduction
 
-This package was a part of [sicaboy/laravel-security](https://github.com/sicaboy/laravel-security). Later moved to this separated repository.
+A powerful and flexible Laravel package that provides Multi-factor Authentication (MFA) / Two-factor Authentication (2FA) middleware to secure your Laravel applications. This package was originally part of [sicaboy/laravel-security](https://github.com/sicaboy/laravel-security) and has been moved to this dedicated repository.
 
-This package provides a Middleware to protect pages with MFA in your Laravel projects.
+## Features
+
+- ✅ **Easy Integration** - Simple middleware-based implementation
+- ✅ **Email-based MFA** - Secure code delivery via email
+- ✅ **Multiple Auth Guards** - Support for different authentication contexts (user, admin, etc.)
+- ✅ **Configurable** - Flexible configuration options
+- ✅ **Queue Support** - Background email sending with Laravel queues
+- ✅ **Cache-based** - Efficient code storage and verification tracking
+- ✅ **Customizable Views** - Override templates to match your design
+- ✅ **Laravel 5.7+ Support** - Compatible with modern Laravel versions
 
 
 ## Installation
 
-Requirements:
-- [PHP](https://php.net) 5.5+, 7.*, 8.0+
+### Requirements
+- PHP 7.1+ or 8.0+
+- Laravel 5.7+
 - [Composer](https://getcomposer.org)
 
-To get the latest version of Laravel MFA, simply run:
+### Install via Composer
 
-```
+```bash
 composer require sicaboy/laravel-mfa
 ```
 
-Then do vendor publish:
+### Publish Configuration and Views
 
-```
+```bash
 php artisan vendor:publish --provider="Sicaboy\LaravelMFA\LaravelMFAServiceProvider"
 ```
 
-After publishing, you can modify templates and config in:
+This will publish:
+- Configuration file: `config/laravel-mfa.php`
+- View templates: `resources/views/vendor/laravel-mfa/`
 
-```
-app/config/laravel-mfa.php
-resources/views/vendor/laravel-mfa/
-```
+### Service Provider Registration (Laravel < 5.5)
 
-If you're on Laravel < 5.5, you'll need to register the service provider. Open up `config/app.php` and add the following to the `providers` array:
+If you're using Laravel < 5.5, manually register the service provider in `config/app.php`:
 
 ```php
-Siaboy\LaravelMFA\LaravelMFAServiceProvider::class,
+'providers' => [
+    // ...
+    Sicaboy\LaravelMFA\LaravelMFAServiceProvider::class,
+],
 ```
 
 # Usage
 
-### General Usage
+## Basic Usage
 
-Attach the middleware to your routes to protect your pages.
+Protect your routes by applying the `mfa` middleware:
 
 ```php
+// Protect individual routes
+Route::get('/dashboard', 'DashboardController@index')->middleware('mfa');
+
+// Protect route groups
 Route::middleware(['mfa'])->group(function () {
-    ...
+    Route::get('/admin', 'AdminController@index');
+    Route::get('/profile', 'ProfileController@show');
 });
 ```
 
-### If Using Different Auth Objects
-If you use different `Auth` objects, for example user auth and admin auth, you can apply following to enable MFA for admin pages. 
+## Multiple Authentication Guards
 
-- Attach the middleware to your routes.
+If you use multiple authentication guards (e.g., separate user and admin authentication), specify the guard group:
 
 ```php
+// For admin routes
 Route::middleware(['mfa:admin'])->group(function () {
-    ...
+    Route::get('/admin/dashboard', 'Admin\DashboardController@index');
 });
 ```
 
-- Add a group in your config file `config/laravel-mfa.php`
+Configure the corresponding group in `config/laravel-mfa.php`:
 
 ```php
 return [
     'default' => [
-        ...
+        // Default configuration...
     ],
-    'group' 
+    'group' => [
         'admin' => [ // Example, when using middleware 'mfa:admin'. Attributes not mentioned will be inherit from `default` above
             'login_route' => 'admin.login',
             'auth_user_closure' => function() {
@@ -83,37 +106,147 @@ return [
             ...
         ]
     ],
+];
 ```
 
-## Queue
+## Configuration Options
 
-If your application has a `artisan queue:work` daemon running, you can send auth code in a queue by changing the config.
+### Email Configuration
+
+Configure email settings in `config/laravel-mfa.php`:
+
+```php
+'email' => [
+    'queue' => true, // Enable queue for background sending
+    'template' => 'laravel-mfa::emails.authentication-code',
+    'subject' => 'Your Authentication Code',
+],
+```
+
+### Code Expiration
+
+Set how long verification codes remain valid:
+
+```php
+'code_expire_after_minutes' => 10, // Default: 10 minutes
+```
+
+## Queue Configuration
+
+For applications with queue workers running, enable background email sending:
 
 ```php
 return [
     'default' => [
-        ...
         'email' => [
-            'queue' => true,
-        ...
+            'queue' => true, // Enable queue processing
         ]
     ]
-]
+];
 ```
 
+Make sure your queue worker is running:
 
-## TODO
+```bash
+php artisan queue:work
+```
 
-- Switch on MFA on specific users (DB field-based)
+## API Responses
+
+The middleware provides JSON responses for API requests:
+
+- **403** - User not authenticated
+- **423** - MFA verification required
+
+```json
+{
+    "error": "MFA Required",
+    "url": "/mfa/generate?group=default"
+}
+```
+
+## Testing
+
+Run the test suite:
+
+```bash
+composer test
+```
+
+Or run PHPUnit directly:
+
+```bash
+./vendor/bin/phpunit
+```
+
+## Security Considerations
+
+- Codes expire after the configured time limit (default: 10 minutes)
+- Verification status is cached to prevent replay attacks
+- Email delivery can be queued for better performance
+- Multiple authentication contexts are supported
+
+## Roadmap
+
+- ✅ Email-based MFA
+- 🔄 SMS-based MFA
+- 🔄 TOTP/Authenticator app support
+- 🔄 User-specific MFA settings
+- 🔄 Backup codes
+
+## Contributing
+
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
+### Development Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/sicaboy/laravel-mfa.git
+cd laravel-mfa
+```
+
+2. Install dependencies:
+```bash
+composer install
+```
+
+3. Run tests:
+```bash
+composer test
+```
+
+### Running Tests
+
+```bash
+# Run all tests
+composer test
+
+# Run tests with coverage
+./vendor/bin/phpunit --coverage-html build/coverage
+
+# Run specific test file
+./vendor/bin/phpunit tests/Unit/MFAHelperTest.php
+
+# Run specific test method
+./vendor/bin/phpunit --filter testGetConfigByGroupReturnsGroupConfig
+```
 
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
-## Contributing
-
-Please feel free to fork this package and contribute by submitting a pull request to enhance the functionalities.
-
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
+
+## Support
+
+- **Issues**: [GitHub Issues](https://github.com/sicaboy/laravel-mfa/issues)
+- **Documentation**: This README and inline code documentation
+- **Email**: [slj@slj.me](mailto:slj@slj.me)
+
+## Credits
+
+- [David Shen](https://github.com/sicaboy)
+- [All Contributors](../../contributors)

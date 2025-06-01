@@ -78,7 +78,7 @@ class MFAController extends Controller
         }
 
         if ($this->helper->isVerificationCompleted($this->configGroup)) {
-            $this->redirectToVerifiedRoute();
+            return $this->redirectToVerifiedRoute();
         }
         return false;
     }
