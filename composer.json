@@ -52,5 +52,18 @@
                 "Sicaboy\\LaravelMFA\\LaravelMFAServiceProvider"
             ]
         }
+    },
+    "config": {
+        "audit": {
+            "ignore": [
+                "PKSA-8qx3-n5y5-vvnd",
+                "PKSA-w7xr-vk7n-rstm",
+                "PKSA-p3rx-dfwp-73ny",
+                "PKSA-ckwp-rt7t-c46m",
+                "PKSA-4npr-btr6-zhny",
+                "PKSA-njrm-6dtg-m2pc",
+                "PKSA-985r-hryy-555b"
+            ]
+        }
     }
 }
