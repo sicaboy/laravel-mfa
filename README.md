@@ -1,10 +1,10 @@
 # Laravel Multi-factor Authentication (MFA) / Two-factor Authentication (2FA)
 
 [![Latest Stable Version](https://poser.pugx.org/sicaboy/laravel-mfa/v/stable.svg)](https://packagist.org/packages/sicaboy/laravel-mfa)
-[![Total Downloads](https://img.shields.io/packagist/dt/sicaboy/laravel-mfa.svg?style=flat-square)](https://packagist.org/packages/sicaboy/laravel-mfa)
+[![Total Downloads](https://img.shields.io/pagist/dt/sicaboy/laravel-mfa.svg?style=flat-square)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![License](https://poser.pugx.org/sicaboy/laravel-mfa/license.svg)](LICENSE.md)
 [![Tests](https://github.com/sicaboy/laravel-mfa/workflows/Tests/badge.svg)](https://github.com/sicaboy/laravel-mfa/actions)
-[![PHP Version Require](http://poser.pugx.org/sicaboy/laravel-mfa/require/php)](https://packagist.org/packages/sicaboy/laravel-mfa)
+[![PHP Version Require](http://poser.pugx.org/sicaboy/require/php)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![Packagist](https://img.shields.io/packagist/v/sicaboy/laravel-mfa.svg)](https://packagist.org/packages/sicaboy/laravel-mfa)
 [![GitHub issues](https://img.shields.io/github/issues/sicaboy/laravel-mfa.svg)](https://github.com/sicaboy/laravel-mfa/issues)
 [![GitHub stars](https://img.shields.io/github/stars/sicaboy/laravel-mfa.svg)](https://github.com/sicaboy/laravel-mfa/stargazers)
